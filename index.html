@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Het Houtse Meer - AI Dashboard Presentatie</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            /* Huisstijl kleuren - afgeleid van logo en screenshot */
+            --color-gold: #D4AF37;
+            --color-gold-light: #F4D03F;
+            --color-petrol: #2C5F5C;
+            --color-petrol-dark: #1E3F3D;
+            --color-black: #0A0A0A;
+            --color-offwhite: #F5F3ED;
+            --color-beige: #E8E5DC;
+            --color-gray: #6B7280;
+            --color-gray-light: #D1D5DB;
+            
+            /* Typografie */
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+            
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 3rem;
+            --spacing-xl: 4rem;
+            
+            /* Transitions */
+            --transition-fast: 0.2s ease;
+            --transition-medium: 0.4s ease;
+            --transition-slow: 0.6s ease;
+        }
+        
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--color-petrol-dark);
+            background: var(--color-offwhite);
+            overflow-x: hidden;
+        }
+        
+        /* ===== NAVIGATION ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+            transition: transform var(--transition-medium);
+        }
+        
+        .nav__container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-sm) var(--spacing-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav__logo {
+            height: 50px;
+            width: auto;
+            transition: transform var(--transition-fast);
+        }
+        
+        .nav__logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav__menu {
+            display: flex;
+            gap: var(--spacing-md);
+            list-style: none;
+            align-items: center;
+        }
+        
+        .nav__link {
+            text-decoration: none;
+            color: var(--color-petrol);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color var(--transition-fast);
+            position: relative;
+        }
+        
+        .nav__link:after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--color-gold);
+            transition: width var(--transition-fast);
+        }
+        
+        .nav__link:hover {
+            color: var(--color-gold);
+        }
+        
+        .nav__link:hover:after,
+        .nav__link.active:after {
+            width: 100%;
+        }
+        
+        .nav__progress {
+            font-size: 0.85rem;
+            color: var(--color-gray);
+            font-weight: 600;
+            padding: 0.4rem 1rem;
+            background: var(--color-beige);
+            border-radius: 20px;
+        }
+        
+        /* Mobile menu toggle */
+        .nav__toggle {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .nav__toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--color-petrol);
+            border-radius: 2px;
+            transition: all var(--transition-fast);
+        }
+        
+        /* ===== SLIDE NAVIGATION DOTS ===== */
+        .slide-nav {
+            position: fixed;
+            right: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        
+        .slide-nav__dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--color-gray-light);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .slide-nav__dot:hover {
+            background: var(--color-gold-light);
+            transform: scale(1.2);
+        }
+        
+        .slide-nav__dot.active {
+            background: var(--color-gold);
+            border-color: var(--color-gold);
+            transform: scale(1.3);
+        }
+        
+        /* ===== SLIDES ===== */
+        .slide {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: calc(80px + var(--spacing-md)) var(--spacing-md) var(--spacing-md);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--transition-slow), transform var(--transition-slow);
+        }
+        
+        .slide.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide__container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* ===== SLIDE 1: HERO ===== */
+        .slide--hero {
+            background: linear-gradient(135deg, var(--color-black) 0%, var(--color-petrol-dark) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide--hero:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="none" stroke="%23D4AF37" stroke-width="0.5" opacity="0.1"/><circle cx="100" cy="100" r="60" fill="none" stroke="%23D4AF37" stroke-width="0.5" opacity="0.15"/><circle cx="100" cy="100" r="40" fill="none" stroke="%23D4AF37" stroke-width="0.5" opacity="0.2"/><circle cx="100" cy="100" r="20" fill="none" stroke="%23D4AF37" stroke-width="0.5" opacity="0.25"/></svg>') center/contain no-repeat;
+            animation: rotate 60s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .hero__content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .hero__subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--color-gold-light);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .hero__title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--spacing-md);
+            color: white;
+        }
+        
+        .hero__question {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 900px;
+            margin: 0 auto var(--spacing-xl);
+            font-weight: 300;
+        }
+        
+        .hero__cta {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--color-gold);
+            color: var(--color-black);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all var(--transition-fast);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .hero__cta:hover {
+            background: var(--color-gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.4);
+        }
+        
+        /* ===== CONTENT SLIDES (A, B, C, D) ===== */
+        .slide--content {
+            background: white;
+        }
+        
+        .slide--content:nth-child(even) {
+            background: var(--color-offwhite);
+        }
+        
+        .content__header {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .content__phase {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--color-gold);
+            color: var(--color-black);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 30px;
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .content__title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: var(--color-petrol-dark);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .content__intro {
+            font-size: 1.2rem;
+            color: var(--color-gray);
+            line-height: 1.8;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .content__list {
+            list-style: none;
+            display: grid;
+            gap: var(--spacing-sm);
+        }
+        
+        .content__item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 8px;
+            transition: all var(--transition-fast);
+        }
+        
+        .content__item:hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .content__icon {
+            min-width: 24px;
+            width: 24px;
+            height: 24px;
+            background: var(--color-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.8rem;
+            margin-top: 2px;
+        }
+        
+        .content__text {
+            flex: 1;
+            color: var(--color-petrol-dark);
+            line-height: 1.7;
+        }
+        
+        .content__result {
+            margin-top: var(--spacing-lg);
+            padding: var(--spacing-md);
+            background: linear-gradient(135deg, var(--color-petrol) 0%, var(--color-petrol-dark) 100%);
+            color: white;
+            border-radius: 12px;
+            border-left: 4px solid var(--color-gold);
+        }
+        
+        .content__result-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-gold-light);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .content__result-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        /* ===== SLIDE 6: IMPACT & CTA ===== */
+        section.slide.slide--impact {
+            background: linear-gradient(135deg, #1E3F3D 0%, #0A0A0A 100%) !important;
+            color: #ffffff !important;
+        }
+        
+        .slide--impact * {
+            color: inherit;
+        }
+        
+        .impact__container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .impact__title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: var(--spacing-lg);
+            color: #ffffff !important;
+        }
+        
+        .impact__intro {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9) !important;
+            max-width: 900px;
+            margin: 0 auto var(--spacing-xl);
+            font-weight: 300;
+        }
+        
+        .impact__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .impact__card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all var(--transition-medium);
+        }
+        
+        .impact__card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .impact__icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .impact__card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: #F4D03F !important;
+        }
+        
+        .impact__card-text {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+        }
+        
+        .impact__cta-container {
+            margin-top: var(--spacing-xl);
+        }
+        
+        .impact__cta-title {
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-md);
+            font-weight: 400;
+            color: #ffffff !important;
+        }
+        
+        .impact__cta {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: #D4AF37;
+            color: #0A0A0A !important;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: all var(--transition-fast);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .impact__cta:hover {
+            background: #F4D03F;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+        }
+        
+        .impact__contact {
+            margin-top: var(--spacing-md);
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        
+        .impact__contact a {
+            color: #F4D03F !important;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav__menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: var(--spacing-md);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                transition: left var(--transition-medium);
+                gap: var(--spacing-sm);
+            }
+            
+            .nav__menu.active {
+                left: 0;
+            }
+            
+            .nav__toggle {
+                display: flex;
+            }
+            
+            .slide-nav {
+                display: none;
+            }
+            
+            .slide {
+                padding: calc(70px + var(--spacing-md)) var(--spacing-sm) var(--spacing-md);
+            }
+            
+            .impact__grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .nav,
+            .slide-nav,
+            .hero__cta,
+            .impact__cta {
+                display: none;
+            }
+            
+            .slide {
+                min-height: auto;
+                page-break-after: always;
+                padding: 2rem;
+            }
+            
+            .slide--hero,
+            .slide--impact {
+                background: white !important;
+                color: black !important;
+            }
+        }
+        
+        /* ===== ACCESSIBILITY ===== */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* ===== UTILITIES ===== */
+        .text-center {
+            text-align: center;
+        }
+        
+        .mb-lg {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        /* Focus styles voor toegankelijkheid */
+        *:focus {
+            outline: 2px solid var(--color-gold);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav">
+        <div class="nav__container">
+            <!-- LOGO: Vervang src met je eigen logo pad -->
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='90' fill='none' stroke='%23D4AF37' stroke-width='2'/%3E%3Ccircle cx='100' cy='100' r='70' fill='none' stroke='%23F4D03F' stroke-width='2'/%3E%3Ccircle cx='100' cy='100' r='50' fill='none' stroke='%23D4AF37' stroke-width='2'/%3E%3Ccircle cx='100' cy='100' r='30' fill='none' stroke='%23F4D03F' stroke-width='2'/%3E%3Ccircle cx='100' cy='100' r='10' fill='%23D4AF37'/%3E%3C/svg%3E" alt="Het Houtse Meer Logo" class="nav__logo">
+            
+            <!-- Mobile toggle -->
+            <button class="nav__toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul class="nav__menu">
+                <li><a href="#intro" class="nav__link active" data-slide="0">Intro</a></li>
+                <li><a href="#analyse" class="nav__link" data-slide="1">Analyse</a></li>
+                <li><a href="#breeding" class="nav__link" data-slide="2">Breeding</a></li>
+                <li><a href="#concepting" class="nav__link" data-slide="3">Concepting</a></li>
+                <li><a href="#design" class="nav__link" data-slide="4">Design</a></li>
+                <li><a href="#impact" class="nav__link" data-slide="5">Eindproduct</a></li>
+                <li><span class="nav__progress">1 / 6</span></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- ===== SLIDE NAVIGATION DOTS ===== -->
+    <div class="slide-nav">
+        <div class="slide-nav__dot active" data-slide="0"></div>
+        <div class="slide-nav__dot" data-slide="1"></div>
+        <div class="slide-nav__dot" data-slide="2"></div>
+        <div class="slide-nav__dot" data-slide="3"></div>
+        <div class="slide-nav__dot" data-slide="4"></div>
+        <div class="slide-nav__dot" data-slide="5"></div>
+    </div>
+    
+    <!-- ===== SLIDE 1: HERO ===== -->
+    <section class="slide slide--hero visible" id="intro">
+        <div class="slide__container">
+            <div class="hero__content">
+                <p class="hero__subtitle">Het Houtse Meer</p>
+                <h1 class="hero__title">AI-gestuurd Dashboard<br>voor Datagedreven Groei</h1>
+                <p class="hero__question">
+                    Hoe kan Het Houtse Meer door middel van een AI-gestuurd dashboard beter inzicht krijgen in historische prestaties, actuele trends en toekomstige voorspellingen, zodat het management sneller en effectiever kan sturen op groei en resultaat?
+                </p>
+                <a href="#analyse" class="hero__cta">Ontdek de oplossing</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ===== SLIDE 2: FASE A - ANALYSE ===== -->
+    <section class="slide slide--content" id="analyse">
+        <div class="slide__container">
+            <div class="content__header">
+                <span class="content__phase">Fase A</span>
+                <h2 class="content__title">Analyse</h2>
+                <p class="content__intro">
+                    In deze fase wordt de huidige situatie grondig onderzocht.
+                </p>
+            </div>
+            
+            <ul class="content__list">
+                <li class="content__item">
+                    <span class="content__icon">1</span>
+                    <span class="content__text">Inventariseren van huidige KPI's en rapportages</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">2</span>
+                    <span class="content__text">Vaststellen welke inzichten ontbreken</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">3</span>
+                    <span class="content__text">In kaart brengen van databronnen en datakwaliteit</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">4</span>
+                    <span class="content__text">Bepalen welke informatie nodig is voor betere sturing</span>
+                </li>
+            </ul>
+            
+            <div class="content__result">
+                <div class="content__result-label">Resultaat</div>
+                <p class="content__result-text">
+                    Duidelijke informatiebehoefte en functionele eisen.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ===== SLIDE 3: FASE B - BREEDING ===== -->
+    <section class="slide slide--content" id="breeding">
+        <div class="slide__container">
+            <div class="content__header">
+                <span class="content__phase">Fase B</span>
+                <h2 class="content__title">Breeding</h2>
+                <p class="content__intro">
+                    Creativiteit en verkenning staan centraal om de beste oplossingsrichtingen te vinden.
+                </p>
+            </div>
+            
+            <ul class="content__list">
+                <li class="content__item">
+                    <span class="content__icon">1</span>
+                    <span class="content__text">Brainstormsessies met management en medewerkers</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">2</span>
+                    <span class="content__text">Verkennen van gewenste inzichten, voorspellingen en signalen</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">3</span>
+                    <span class="content__text">Bepalen welke AI-toepassingen relevant zijn</span>
+                </li>
+            </ul>
+            
+            <div class="content__result">
+                <div class="content__result-label">Resultaat</div>
+                <p class="content__result-text">
+                    Richting voor het dashboard en gewenste functionaliteiten.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ===== SLIDE 4: FASE C - CONCEPTING ===== -->
+    <section class="slide slide--content" id="concepting">
+        <div class="slide__container">
+            <div class="content__header">
+                <span class="content__phase">Fase C</span>
+                <h2 class="content__title">Concepting</h2>
+                <p class="content__intro">
+                    Het dashboard krijgt vorm met concrete structuren en functionaliteiten.
+                </p>
+            </div>
+            
+            <ul class="content__list">
+                <li class="content__item">
+                    <span class="content__icon">1</span>
+                    <span class="content__text">Ontwikkelen van de dashboardstructuur</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">2</span>
+                    <span class="content__text">Bepalen van KPI's, datastromen en voorspellingsmodellen</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">3</span>
+                    <span class="content__text">Definiëren van signaleringsmechanismen</span>
+                </li>
+            </ul>
+            
+            <div class="content__result">
+                <div class="content__result-label">Resultaat</div>
+                <p class="content__result-text">
+                    Uitgewerkt dashboardconcept.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ===== SLIDE 5: FASE D - DESIGN & REALISATIE ===== -->
+    <section class="slide slide--content" id="design">
+        <div class="slide__container">
+            <div class="content__header">
+                <span class="content__phase">Fase D</span>
+                <h2 class="content__title">Design & Realisatie</h2>
+                <p class="content__intro">
+                    Het dashboard wordt gebouwd en operationeel gemaakt.
+                </p>
+            </div>
+            
+            <ul class="content__list">
+                <li class="content__item">
+                    <span class="content__icon">1</span>
+                    <span class="content__text">Bouwen van het dashboard (bijvoorbeeld in Power BI of vergelijkbare tool)</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">2</span>
+                    <span class="content__text">Integreren van databronnen</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">3</span>
+                    <span class="content__text">Implementeren van AI-voorspellingen</span>
+                </li>
+                <li class="content__item">
+                    <span class="content__icon">4</span>
+                    <span class="content__text">Testen met gebruikers</span>
+                </li>
+            </ul>
+            
+            <div class="content__result">
+                <div class="content__result-label">Resultaat</div>
+                <p class="content__result-text">
+                    Een werkend AI-gestuurd managementdashboard.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ===== SLIDE 6: IMPACT & CTA ===== -->
+    <section class="slide slide--impact" id="impact" style="background: linear-gradient(135deg, #1E3F3D 0%, #0A0A0A 100%); color: #ffffff;">
+        <div class="slide__container">
+            <div class="impact__container">
+                <h2 class="impact__title" style="color: #ffffff;">Eindproduct</h2>
+                <p class="impact__intro" style="color: rgba(255, 255, 255, 0.9);">Een operationeel AI-gestuurd dashboard dat real-time inzicht geeft in prestaties, trends en voorspellingen en direct wordt gebruikt door het management van Het Houtse Meer.</p>
+                
+                <div class="impact__grid">
+                    <div class="impact__card">
+                        <div class="impact__icon">📊</div>
+                        <h3 class="impact__card-title" style="color: #F4D03F;">Historische Context</h3>
+                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
+                            Cijfers interpreteren in historische context voor betere vergelijking
+                        </p>
+                    </div>
+                    
+                    <div class="impact__card">
+                        <div class="impact__icon">📈</div>
+                        <h3 class="impact__card-title" style="color: #F4D03F;">Trendanalyse</h3>
+                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
+                            Trends vroegtijdig signaleren en proactief anticiperen
+                        </p>
+                    </div>
+                    
+                    <div class="impact__card">
+                        <div class="impact__icon">🔮</div>
+                        <h3 class="impact__card-title" style="color: #F4D03F;">Voorspellingen</h3>
+                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
+                            Toekomstige prestaties voorspellen met AI-gedreven modellen
+                        </p>
+                    </div>
+                    
+                    <div class="impact__card">
+                        <div class="impact__icon">⚡</div>
+                        <h3 class="impact__card-title" style="color: #F4D03F;">Sneller Bijsturen</h3>
+                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
+                            Sneller en onderbouwd bijsturen op basis van data-inzichten
+                        </p>
+                    </div>
+                    
+                    <div class="impact__card">
+                        <div class="impact__icon">🚀</div>
+                        <h3 class="impact__card-title" style="color: #F4D03F;">Beheerste Groei</h3>
+                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
+                            Groei beheerst en datagedreven realiseren met vertrouwen
+                        </p>
+                    </div>
+                    
+                    <div class="impact__card">
+                        <div class="impact__icon">🎯</div>
+                        <h3 class="impact__card-title" style="color: #F4D03F;">Betere Beslissingen</h3>
+                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
+                            Onderbouwde besluitvorming op alle managementniveaus
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="impact__cta-container">
+                    <h3 class="impact__cta-title" style="color: #ffffff;">Klaar om de volgende stap te zetten?</h3>
+                    <a href="#intro" class="impact__cta" style="background: #D4AF37; color: #0A0A0A;">Start het Traject</a>
+                    <p class="impact__contact" style="color: rgba(255, 255, 255, 0.7);">
+                        Of neem direct contact op: <a href="mailto:info@houtsemeer.nl" style="color: #F4D03F;">info@houtsemeer.nl</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ===== CONFIGURATION =====
+        const config = {
+            animationDelay: 200,
+            scrollThreshold: 0.5
+        };
+        
+        // ===== DOM ELEMENTS =====
+        const slides = document.querySelectorAll('.slide');
+        const navLinks = document.querySelectorAll('.nav__link');
+        const slideDots = document.querySelectorAll('.slide-nav__dot');
+        const navProgress = document.querySelector('.nav__progress');
+        const navToggle = document.querySelector('.nav__toggle');
+        const navMenu = document.querySelector('.nav__menu');
+        
+        let currentSlide = 0;
+        let isScrolling = false;
+        
+        // ===== SLIDE VISIBILITY OBSERVER =====
+        const observerOptions = {
+            root: null,
+            threshold: config.scrollThreshold,
+            rootMargin: '-20% 0px -20% 0px'
+        };
+        
+        const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    updateCurrentSlide(Array.from(slides).indexOf(entry.target));
+                }
+            });
+        }, observerOptions);
+        
+        slides.forEach(slide => slideObserver.observe(slide));
+        
+        // ===== UPDATE CURRENT SLIDE =====
+        function updateCurrentSlide(index) {
+            currentSlide = index;
+            
+            // Update navigation
+            navLinks.forEach((link, i) => {
+                link.classList.toggle('active', i === index);
+            });
+            
+            // Update dots
+            slideDots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            
+            // Update progress
+            navProgress.textContent = `${index + 1} / ${slides.length}`;
+        }
+        
+        // ===== SMOOTH SCROLL TO SLIDE =====
+        function scrollToSlide(index) {
+            if (isScrolling) return;
+            
+            isScrolling = true;
+            slides[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            setTimeout(() => {
+                isScrolling = false;
+            }, 1000);
+        }
+        
+        // ===== NAVIGATION CLICK HANDLERS =====
+        navLinks.forEach((link, index) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollToSlide(index);
+                
+                // Close mobile menu
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+        
+        slideDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                scrollToSlide(index);
+            });
+        });
+        
+        // ===== KEYBOARD NAVIGATION =====
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                if (currentSlide < slides.length - 1) {
+                    scrollToSlide(currentSlide + 1);
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                if (currentSlide > 0) {
+                    scrollToSlide(currentSlide - 1);
+                }
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                scrollToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                scrollToSlide(slides.length - 1);
+            }
+        });
+        
+        // ===== MOBILE MENU TOGGLE =====
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+        
+        // ===== CLOSE MOBILE MENU ON OUTSIDE CLICK =====
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
+            }
+        });
+        
+        // ===== WHEEL NAVIGATION (OPTIONAL - COMMENTED OUT FOR NATURAL SCROLLING) =====
+        /*
+        let wheelTimeout;
+        document.addEventListener('wheel', (e) => {
+            if (isScrolling) return;
+            
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0 && currentSlide < slides.length - 1) {
+                    scrollToSlide(currentSlide + 1);
+                } else if (e.deltaY < 0 && currentSlide > 0) {
+                    scrollToSlide(currentSlide - 1);
+                }
+            }, 50);
+        }, { passive: true });
+        */
+        
+        // ===== INITIALIZE =====
+        window.addEventListener('load', () => {
+            slides[0].classList.add('visible');
+            updateCurrentSlide(0);
+        });
+    </script>
+</body>
+</html>
