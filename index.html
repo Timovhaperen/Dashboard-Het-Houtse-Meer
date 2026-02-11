@@ -348,11 +348,22 @@
             background: rgba(212, 175, 55, 0.05);
             border-radius: 8px;
             transition: all var(--transition-fast);
+            cursor: pointer;
         }
         
         .content__item:hover {
-            background: rgba(212, 175, 55, 0.1);
+            background: var(--color-petrol);
             transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(44, 95, 92, 0.2);
+        }
+        
+        .content__item:hover .content__icon {
+            background: var(--color-gold);
+            color: var(--color-black);
+        }
+        
+        .content__item:hover .content__text {
+            color: white;
         }
         
         .content__icon {
@@ -399,117 +410,20 @@
             line-height: 1.7;
         }
         
-        /* ===== SLIDE 6: IMPACT & CTA ===== */
-        section.slide.slide--impact {
-            background: linear-gradient(135deg, #1E3F3D 0%, #0A0A0A 100%) !important;
-            color: #ffffff !important;
-        }
-        
-        .slide--impact * {
-            color: inherit;
-        }
-        
-        .impact__container {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .impact__title {
-            font-family: var(--font-heading);
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            margin-bottom: var(--spacing-lg);
-            color: #ffffff !important;
-        }
-        
-        .impact__intro {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.9) !important;
-            max-width: 900px;
-            margin: 0 auto var(--spacing-xl);
-            font-weight: 300;
-        }
-        
-        .impact__grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-xl);
-        }
-        
-        .impact__card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: var(--spacing-lg);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all var(--transition-medium);
-        }
-        
-        .impact__card:hover {
-            background: rgba(255, 255, 255, 0.15);
+        /* ===== IMPACT BENEFIT CARDS HOVER ===== */
+        .impact-benefit-card:hover {
+            background: var(--color-petrol) !important;
+            border-left-color: var(--color-gold) !important;
             transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(44, 95, 92, 0.25);
         }
         
-        .impact__icon {
-            font-size: 2.5rem;
-            margin-bottom: var(--spacing-sm);
+        .impact-benefit-card:hover .impact-benefit-title {
+            color: white !important;
         }
         
-        .impact__card-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: var(--spacing-sm);
-            color: #F4D03F !important;
-        }
-        
-        .impact__card-text {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.7;
-        }
-        
-        .impact__cta-container {
-            margin-top: var(--spacing-xl);
-        }
-        
-        .impact__cta-title {
-            font-size: 1.8rem;
-            margin-bottom: var(--spacing-md);
-            font-weight: 400;
-            color: #ffffff !important;
-        }
-        
-        .impact__cta {
-            display: inline-block;
-            padding: 1.2rem 3rem;
-            background: #D4AF37;
-            color: #0A0A0A !important;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            transition: all var(--transition-fast);
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .impact__cta:hover {
-            background: #F4D03F;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
-        }
-        
-        .impact__contact {
-            margin-top: var(--spacing-md);
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.7) !important;
-        }
-        
-        .impact__contact a {
-            color: #F4D03F !important;
-            text-decoration: none;
-            font-weight: 600;
+        .impact-benefit-card:hover .impact-benefit-text {
+            color: rgba(255, 255, 255, 0.9) !important;
         }
         
         /* ===== RESPONSIVE ===== */
@@ -795,70 +709,169 @@
         </div>
     </section>
     
-    <!-- ===== SLIDE 6: IMPACT & CTA ===== -->
-    <section class="slide slide--impact" id="impact" style="background: linear-gradient(135deg, #1E3F3D 0%, #0A0A0A 100%); color: #ffffff;">
+    <!-- ===== SLIDE 6: EINDPRODUCT ===== -->
+    <section class="slide slide--content visible" id="impact" style="opacity: 1 !important; transform: translateY(0) !important;">
         <div class="slide__container">
-            <div class="impact__container">
-                <h2 class="impact__title" style="color: #ffffff;">Eindproduct</h2>
-                <p class="impact__intro" style="color: rgba(255, 255, 255, 0.9);">Een operationeel AI-gestuurd dashboard dat real-time inzicht geeft in prestaties, trends en voorspellingen en direct wordt gebruikt door het management van Het Houtse Meer.</p>
+            <div class="content__header">
+                <span class="content__phase" style="background: #D4AF37; color: #0A0A0A;">Eindresultaat</span>
+                <h2 class="content__title">Eindproduct</h2>
+                <p class="content__intro">
+                    Een operationeel AI-gestuurd dashboard dat real-time inzicht geeft in prestaties, trends en voorspellingen.
+                </p>
+            </div>
+            
+            <!-- Dashboard Visualisatie -->
+            <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 2rem;">
+                <h3 style="font-size: 1.3rem; font-weight: 600; color: #1E3F3D; margin-bottom: 1.5rem; text-align: center;">Dashboard Preview</h3>
                 
-                <div class="impact__grid">
-                    <div class="impact__card">
-                        <div class="impact__icon">📊</div>
-                        <h3 class="impact__card-title" style="color: #F4D03F;">Historische Context</h3>
-                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
-                            Cijfers interpreteren in historische context voor betere vergelijking
-                        </p>
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 1rem;">
+                    <!-- Line Chart: Omzet per Maand -->
+                    <div style="background: #F5F3ED; padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="font-size: 0.95rem; font-weight: 600; color: #1E3F3D; margin-bottom: 1rem;">Omzet per Maand (€)</h4>
+                        <svg viewBox="0 0 400 200" style="width: 100%; height: auto;">
+                            <!-- Grid lines -->
+                            <line x1="40" y1="20" x2="40" y2="160" stroke="#D1D5DB" stroke-width="1"/>
+                            <line x1="40" y1="160" x2="380" y2="160" stroke="#D1D5DB" stroke-width="2"/>
+                            
+                            <!-- Y-axis labels -->
+                            <text x="30" y="25" font-size="10" fill="#6B7280" text-anchor="end">100k</text>
+                            <text x="30" y="90" font-size="10" fill="#6B7280" text-anchor="end">50k</text>
+                            <text x="30" y="163" font-size="10" fill="#6B7280" text-anchor="end">0</text>
+                            
+                            <!-- X-axis labels -->
+                            <text x="80" y="175" font-size="10" fill="#6B7280" text-anchor="middle">Jan</text>
+                            <text x="140" y="175" font-size="10" fill="#6B7280" text-anchor="middle">Mrt</text>
+                            <text x="200" y="175" font-size="10" fill="#6B7280" text-anchor="middle">Mei</text>
+                            <text x="260" y="175" font-size="10" fill="#6B7280" text-anchor="middle">Jul</text>
+                            <text x="320" y="175" font-size="10" fill="#6B7280" text-anchor="middle">Sep</text>
+                            <text x="370" y="175" font-size="10" fill="#6B7280" text-anchor="middle">Nov</text>
+                            
+                            <!-- Line 2023 (light gray) -->
+                            <polyline points="50,120 80,110 140,100 200,95 260,85 320,80 370,75" 
+                                      fill="none" stroke="#D1D5DB" stroke-width="2"/>
+                            
+                            <!-- Line 2024 (petrol) -->
+                            <polyline points="50,100 80,90 140,75 200,70 260,60 320,50 370,45" 
+                                      fill="none" stroke="#2C5F5C" stroke-width="3"/>
+                            
+                            <!-- Line 2025 (gold) -->
+                            <polyline points="50,90 80,75 140,60 200,50 260,40 320,30 370,25" 
+                                      fill="none" stroke="#D4AF37" stroke-width="3"/>
+                            
+                            <!-- Data points -->
+                            <circle cx="370" cy="75" r="4" fill="#D1D5DB"/>
+                            <circle cx="370" cy="45" r="4" fill="#2C5F5C"/>
+                            <circle cx="370" cy="25" r="4" fill="#D4AF37"/>
+                        </svg>
+                        <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; font-size: 0.85rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div style="width: 20px; height: 3px; background: #D1D5DB;"></div>
+                                <span style="color: #6B7280;">2023</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div style="width: 20px; height: 3px; background: #2C5F5C;"></div>
+                                <span style="color: #6B7280;">2024</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <div style="width: 20px; height: 3px; background: #D4AF37;"></div>
+                                <span style="color: #6B7280;">2025 (Forecast)</span>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="impact__card">
-                        <div class="impact__icon">📈</div>
-                        <h3 class="impact__card-title" style="color: #F4D03F;">Trendanalyse</h3>
-                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
-                            Trends vroegtijdig signaleren en proactief anticiperen
-                        </p>
-                    </div>
-                    
-                    <div class="impact__card">
-                        <div class="impact__icon">🔮</div>
-                        <h3 class="impact__card-title" style="color: #F4D03F;">Voorspellingen</h3>
-                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
-                            Toekomstige prestaties voorspellen met AI-gedreven modellen
-                        </p>
-                    </div>
-                    
-                    <div class="impact__card">
-                        <div class="impact__icon">⚡</div>
-                        <h3 class="impact__card-title" style="color: #F4D03F;">Sneller Bijsturen</h3>
-                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
-                            Sneller en onderbouwd bijsturen op basis van data-inzichten
-                        </p>
-                    </div>
-                    
-                    <div class="impact__card">
-                        <div class="impact__icon">🚀</div>
-                        <h3 class="impact__card-title" style="color: #F4D03F;">Beheerste Groei</h3>
-                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
-                            Groei beheerst en datagedreven realiseren met vertrouwen
-                        </p>
-                    </div>
-                    
-                    <div class="impact__card">
-                        <div class="impact__icon">🎯</div>
-                        <h3 class="impact__card-title" style="color: #F4D03F;">Betere Beslissingen</h3>
-                        <p class="impact__card-text" style="color: rgba(255, 255, 255, 0.8);">
-                            Onderbouwde besluitvorming op alle managementniveaus
-                        </p>
+                    <!-- Pie Chart: Conversie -->
+                    <div style="background: #F5F3ED; padding: 1.5rem; border-radius: 8px;">
+                        <h4 style="font-size: 0.95rem; font-weight: 600; color: #1E3F3D; margin-bottom: 1rem;">Conversie Rate Q4</h4>
+                        <svg viewBox="0 0 200 200" style="width: 100%; height: auto;">
+                            <!-- Pie slices -->
+                            <!-- Converted (75%) - petrol -->
+                            <path d="M 100 100 L 100 20 A 80 80 0 1 1 40 140 Z" fill="#2C5F5C"/>
+                            <!-- In Progress (15%) - gold -->
+                            <path d="M 100 100 L 40 140 A 80 80 0 0 1 65 32 Z" fill="#D4AF37"/>
+                            <!-- Lost (10%) - light gray -->
+                            <path d="M 100 100 L 65 32 A 80 80 0 0 1 100 20 Z" fill="#D1D5DB"/>
+                            
+                            <!-- Center circle for donut effect -->
+                            <circle cx="100" cy="100" r="45" fill="white"/>
+                            
+                            <!-- Center text -->
+                            <text x="100" y="95" font-size="24" font-weight="bold" fill="#2C5F5C" text-anchor="middle">75%</text>
+                            <text x="100" y="110" font-size="10" fill="#6B7280" text-anchor="middle">Conversie</text>
+                        </svg>
+                        <div style="margin-top: 1rem; font-size: 0.85rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <div style="width: 12px; height: 12px; background: #2C5F5C; border-radius: 2px;"></div>
+                                    <span style="color: #6B7280;">Converted</span>
+                                </div>
+                                <span style="font-weight: 600; color: #1E3F3D;">75%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <div style="width: 12px; height: 12px; background: #D4AF37; border-radius: 2px;"></div>
+                                    <span style="color: #6B7280;">In Progress</span>
+                                </div>
+                                <span style="font-weight: 600; color: #1E3F3D;">15%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <div style="width: 12px; height: 12px; background: #D1D5DB; border-radius: 2px;"></div>
+                                    <span style="color: #6B7280;">Lost</span>
+                                </div>
+                                <span style="font-weight: 600; color: #1E3F3D;">10%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="impact__cta-container">
-                    <h3 class="impact__cta-title" style="color: #ffffff;">Klaar om de volgende stap te zetten?</h3>
-                    <a href="#intro" class="impact__cta" style="background: #D4AF37; color: #0A0A0A;">Start het Traject</a>
-                    <p class="impact__contact" style="color: rgba(255, 255, 255, 0.7);">
-                        Of neem direct contact op: <a href="mailto:info@houtsemeer.nl" style="color: #F4D03F;">info@houtsemeer.nl</a>
-                    </p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div class="impact-benefit-card" style="background: rgba(212, 175, 55, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #D4AF37; transition: all 0.3s ease; cursor: pointer;">
+                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">📊</div>
+                    <h3 class="impact-benefit-title" style="font-size: 1.2rem; font-weight: 600; color: #1E3F3D; margin-bottom: 0.5rem;">Historische Context</h3>
+                    <p class="impact-benefit-text" style="color: #6B7280; line-height: 1.7;">Cijfers interpreteren in historische context voor betere vergelijking</p>
                 </div>
+                
+                <div class="impact-benefit-card" style="background: rgba(212, 175, 55, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #D4AF37; transition: all 0.3s ease; cursor: pointer;">
+                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">📈</div>
+                    <h3 class="impact-benefit-title" style="font-size: 1.2rem; font-weight: 600; color: #1E3F3D; margin-bottom: 0.5rem;">Trendanalyse</h3>
+                    <p class="impact-benefit-text" style="color: #6B7280; line-height: 1.7;">Trends vroegtijdig signaleren en proactief anticiperen</p>
+                </div>
+                
+                <div class="impact-benefit-card" style="background: rgba(212, 175, 55, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #D4AF37; transition: all 0.3s ease; cursor: pointer;">
+                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">🔮</div>
+                    <h3 class="impact-benefit-title" style="font-size: 1.2rem; font-weight: 600; color: #1E3F3D; margin-bottom: 0.5rem;">Voorspellingen</h3>
+                    <p class="impact-benefit-text" style="color: #6B7280; line-height: 1.7;">Toekomstige prestaties voorspellen met AI-gedreven modellen</p>
+                </div>
+                
+                <div class="impact-benefit-card" style="background: rgba(212, 175, 55, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #D4AF37; transition: all 0.3s ease; cursor: pointer;">
+                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">⚡</div>
+                    <h3 class="impact-benefit-title" style="font-size: 1.2rem; font-weight: 600; color: #1E3F3D; margin-bottom: 0.5rem;">Sneller Bijsturen</h3>
+                    <p class="impact-benefit-text" style="color: #6B7280; line-height: 1.7;">Sneller en onderbouwd bijsturen op basis van data-inzichten</p>
+                </div>
+                
+                <div class="impact-benefit-card" style="background: rgba(212, 175, 55, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #D4AF37; transition: all 0.3s ease; cursor: pointer;">
+                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">🚀</div>
+                    <h3 class="impact-benefit-title" style="font-size: 1.2rem; font-weight: 600; color: #1E3F3D; margin-bottom: 0.5rem;">Beheerste Groei</h3>
+                    <p class="impact-benefit-text" style="color: #6B7280; line-height: 1.7;">Groei beheerst en datagedreven realiseren met vertrouwen</p>
+                </div>
+                
+                <div class="impact-benefit-card" style="background: rgba(212, 175, 55, 0.05); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #D4AF37; transition: all 0.3s ease; cursor: pointer;">
+                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">🎯</div>
+                    <h3 class="impact-benefit-title" style="font-size: 1.2rem; font-weight: 600; color: #1E3F3D; margin-bottom: 0.5rem;">Betere Beslissingen</h3>
+                    <p class="impact-benefit-text" style="color: #6B7280; line-height: 1.7;">Onderbouwde besluitvorming op alle managementniveaus</p>
+                </div>
+            </div>
+            
+            <div class="content__result" style="text-align: center; padding: 2rem;">
+                <div class="content__result-label">Volgende Stap</div>
+                <p class="content__result-text" style="margin-bottom: 1.5rem;">
+                    Klaar om de volgende stap te zetten en dit dashboard werkelijkheid te maken?
+                </p>
+                <a href="#intro" style="display: inline-block; padding: 1rem 2.5rem; background: #D4AF37; color: #0A0A0A; text-decoration: none; font-weight: 700; font-size: 1.1rem; border-radius: 50px; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); margin-right: 1rem;">Start het Traject</a>
+                <p style="margin-top: 1rem; font-size: 1rem; color: #F4D03F; font-weight: 600;">
+                    Of neem contact op: <a href="mailto:info@houtsemeer.nl" style="color: #2C5F5C; text-decoration: none; font-weight: 700; border-bottom: 2px solid #2C5F5C;">info@houtsemeer.nl</a>
+                </p>
             </div>
         </div>
     </section>
